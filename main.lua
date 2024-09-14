@@ -1,6 +1,6 @@
 -- To add
 -- animation, wall collision, map
-require "objects/player"
+
 
 function love.load()
     love.window.setTitle("PingPong Platformer")
