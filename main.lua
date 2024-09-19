@@ -9,8 +9,8 @@ function love.load()
     -- libraries -------------------------------------------
     -- physics --
     wf = require 'libraries/windfield'
-    world = wf.newWorld(0, 0, true)
-    world:setGravity(0,512)
+    world = wf.newWorld(1, 1, true)
+    world:setGravity(0,5000)
 
     -- camera --
     camera = require 'libraries/camera'
@@ -24,13 +24,17 @@ function love.load()
     anim8 = require 'libraries/anim8'
     love.graphics.setDefaultFilter("nearest", "nearest")
     -- --------------------------------------------------------
-
+    -- Jumping
+    allowedJump = true
+    jumpDist = 50
+    jumpBuild = 0
+    
     -- PLAYER
     player = {}
-    player.collider = world:newBSGRectangleCollider(400, 250, 50, 70, 10)
+    player.collider = world:newBSGRectangleCollider(400, 400, 50, 70, 10)
     player.collider:setFixedRotation(true)
     player.x = 400
-    player.y = 300
+    player.y = 400
     player.speed = 300
     player.width = 20
     player.height = 30
@@ -58,6 +62,7 @@ function love.update(dt)
 
     local mapW = gameMap.width * gameMap.tilewidth
     local mapH = gameMap.height * gameMap.tileheight 
+    
 
     -- movement of player
     if love.keyboard.isDown("d") then --right
@@ -83,7 +88,7 @@ function love.update(dt)
     end
 
 
-    -- to remove when test is complete
+    --[[ to remove when test is complete
     if love.keyboard.isDown("w") then --up
         volocityY = player.speed * -1
         --player.anim = player.animations.up
@@ -103,7 +108,49 @@ function love.update(dt)
             volocityY = 0
             isMoving = false
         end
+    end ]]
+
+
+    if jumpDist == 50 then
+        allowedJump = true
     end
+
+    if jumpDist == 0 then 
+            allowedJump = false
+        end
+    if love.keyboard.isDown("space") and allowedJump == true then --up
+        volocityY = player.speed * -1
+        --player.anim = player.animations.up
+        isMoving = true
+        jumpDist = jumpDist - 1
+        jumpBuild = 0
+        --[[wall collision animation
+        if player.y < 0 then
+            volocityY = 0
+            isMoving = false
+        end]]
+    end
+
+    if jumpDist < 50 then
+        jumpBuild = jumpBuild + 1
+    end
+
+    if jumpBuild == 50 then
+        jumpDist = 50
+    end
+    
+
+    --[[allowedJump = true
+    if love.keypressed("space") then
+        --if key == "space" and allowedJump then
+            --print("AAAAAAAAAAAAAAAAAAA")
+            -- checks if it is on the ground
+            --if walls, y < player.y + 5 then
+        volocityY =  player.speed * -1
+        
+    end]]
+
+
 
     player.collider:setLinearVelocity(volocityX, volocityY)
 
