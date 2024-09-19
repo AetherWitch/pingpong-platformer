@@ -1,5 +1,3 @@
--- To add
--- animation, wall collision, map
 require "objects/paddle"
 require "objects/ball"
 
@@ -78,7 +76,6 @@ function love.update(dt)
 
     if love.keyboard.isDown("a") then --left
         volocityX = player.speed * -1
-        --player.anim = player.animations.left
         isMoving = true
         --wall collision
         if player.x < 0 then
