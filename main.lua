@@ -88,29 +88,6 @@ function love.update(dt)
     end
 
 
-    --[[ to remove when test is complete
-    if love.keyboard.isDown("w") then --up
-        volocityY = player.speed * -1
-        --player.anim = player.animations.up
-        isMoving = true
-        --wall collision
-        if player.y < 0 then
-            volocityY = 0
-            isMoving = false
-        end
-    end
-    if love.keyboard.isDown("s") then --up
-        volocityY = player.speed
-        --player.anim = player.animations.up
-        isMoving = true
-        --wall collision
-        if player.y < 0 then
-            volocityY = 0
-            isMoving = false
-        end
-    end ]]
-
-
     if jumpDist == 50 then
         allowedJump = true
     end
@@ -138,17 +115,6 @@ function love.update(dt)
     if jumpBuild == 50 then
         jumpDist = 50
     end
-    
-
-    --[[allowedJump = true
-    if love.keypressed("space") then
-        --if key == "space" and allowedJump then
-            --print("AAAAAAAAAAAAAAAAAAA")
-            -- checks if it is on the ground
-            --if walls, y < player.y + 5 then
-        volocityY =  player.speed * -1
-        
-    end]]
 
 
 
