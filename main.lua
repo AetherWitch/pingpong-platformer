@@ -8,7 +8,7 @@ function love.load()
     -- physics --
     wf = require 'libraries/windfield'
     world = wf.newWorld(1, 1, true)
-    world:setGravity(0,5000)
+    world:setGravity(0,7000)
 
     -- camera --
     camera = require 'libraries/camera'
@@ -16,7 +16,7 @@ function love.load()
 
     -- background
     sti = require "libraries/sti"
-    gameMap = sti("maps/platformMap.lua") -- enter map
+    gameMap = sti("maps/platformMap.lua")
 
     -- player sprite--
     anim8 = require 'libraries/anim8'
@@ -40,6 +40,7 @@ function love.load()
     -- PADDLE
     paddle = Paddle:new(30, 100, 75, 150,{1, 1, 1}, 200)
 
+    -- Collision from Tiled Map
     walls = {}
     if gameMap.layers["Walls"] then
         for i, obj in pairs(gameMap.layers["Walls"].objects) do
@@ -85,6 +86,7 @@ function love.update(dt)
     end
 
 
+    -- jumping
     if jumpDist == 50 then
         allowedJump = true
     end
@@ -94,15 +96,9 @@ function love.update(dt)
         end
     if love.keyboard.isDown("space") and allowedJump == true then --up
         volocityY = player.speed * -1
-        --player.anim = player.animations.up
         isMoving = true
         jumpDist = jumpDist - 1
         jumpBuild = 0
-        --[[wall collision animation
-        if player.y < 0 then
-            volocityY = 0
-            isMoving = false
-        end]]
     end
 
     if jumpDist < 50 then
@@ -122,7 +118,7 @@ function love.update(dt)
     player.x = player.collider:getX()
     player.y = player.collider:getY()
 
-    -- camera
+    -- CAMERA
     cam:lookAt(player.x, player.y)
 
     local w = love.graphics.getWidth()
