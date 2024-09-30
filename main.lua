@@ -26,6 +26,7 @@ function love.load()
     allowedJump = true
     jumpDist = 50
     jumpBuild = 0
+    groundY = player
     
     -- PLAYER
     player = {}
@@ -36,6 +37,8 @@ function love.load()
     player.speed = 300
     player.width = 20
     player.height = 30
+
+    groundY = player.y
 
     -- PADDLE
     paddle = Paddle:new(30, 100, 75, 150,{1, 1, 1}, 200)
@@ -85,9 +88,8 @@ function love.update(dt)
         end
     end
 
-
     -- jumping
-    if jumpDist == 50 then
+    if jumpDist == 150 then
         allowedJump = true
     end
 
@@ -95,19 +97,39 @@ function love.update(dt)
             allowedJump = false
         end
     if love.keyboard.isDown("space") and allowedJump == true then --up
-        volocityY = player.speed * -1
+        volocityY = player.speed * -150
         isMoving = true
-        jumpDist = jumpDist - 1
+        jumpDist = jumpDist - 50
         jumpBuild = 0
     end
 
-    if jumpDist < 50 then
+    if jumpDist < 150 then
         jumpBuild = jumpBuild + 1
     end
 
-    if jumpBuild == 50 then
-        jumpDist = 50
+    if jumpBuild == 100 then
+        jumpDist = 150
     end
+    
+
+    -- check if player is touching the ground
+    -- loop to go through all platforms, when found (x) -> check it's height
+    --[[ if touching the ground then jumping is allowed
+    for key, value in pairs(walls) do
+        if player.x > value.x and player.x < value.height then
+            if player.y == value.y then
+                allowedJump = true
+            else
+                allowedJump = false
+            end
+            break
+        end
+    end
+
+    if love.keyboard.isDown("space") and allowedJump == true then
+        volocityY = player.speed * -1
+    end ]]
+
 
 
 
